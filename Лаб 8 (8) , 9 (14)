@@ -1,0 +1,106 @@
+8 (8)
+
+
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+bool isConsonant(char c) {
+    c = tolower(c);
+    return (c != 'a' && c != 'e' && c != 'i' && c != 'o' && c != 'u' && isalpha(c));
+}
+
+int countDigits(string str) {
+    int count = 0;
+    for (int i = 0; i < str.length(); i++) {
+        if (isdigit(str[i])) {
+            count++;
+        }
+    }
+    return count;
+}
+
+int main() {
+    string input;
+    cout << "Ввести string: ";
+    getline(cin, input);
+
+    cout << "Номер цифр string: " << countDigits(input) << endl;
+
+    cout << "Букви з приголосних: ";
+    bool startOfWord = true;
+    for (int i = 0; i < input.length(); i++) {
+        if (isspace(input[i])) {
+            startOfWord = true;
+        }
+        else {
+            if (startOfWord && isConsonant(input[i])) {
+                cout << endl;
+                startOfWord = false;
+            }
+            cout << input[i];
+            startOfWord = false;
+        }
+    }
+
+    return 0;
+}
+
+
+
+9 (14)
+
+#include <iostream>
+#include <fstream>
+#include <list>
+using namespace std;
+
+int main() {
+    list<int> numbers;
+    queue<int> squares;
+    int first_number;
+    string filename = "numbers.txt";
+    ifstream input_file(filename);
+
+    if (!input_file) {
+        cerr << "Проблема з відкриванням файлу " << filename << endl;
+        return 1;
+    }
+
+    
+    int num;
+    while (input_file >> num) {
+        numbers.push_back(num);
+    }
+
+ 
+    if (numbers.empty() || numbers.size() == 1) {
+        cout << "Немає квадратів до черги" << endl;
+        return 0;
+    }
+
+    
+    first_number = numbers.front();
+
+    
+    for (auto it = next(numbers.begin()); it != numbers.end(); it++) {
+        if (*it > first_number) {
+            squares.push(*it * *it);
+        }
+    }
+
+
+    if (squares.empty()) {
+        cout << "Немає квадратів до черги" << endl;
+    } else {
+        cout << "Черга квадратів:" << endl;
+        while (!squares.empty()) {
+            cout << squares.front() << " ";
+            squares.pop();
+        }
+        cout << endl;
+    }
+
+    return 0;
+}
+
